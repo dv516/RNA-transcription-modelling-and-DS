@@ -18,26 +18,26 @@ Model Implementation and Design Space Construction to support 'Quality by Design
 
 ### Background
 
-This model aims to link effective RNA yield in RNA vaccine transcription, which is a grouped term representing the  absolute RNA yield crtical quality attribute (CQA) minus degradation CQA. It is assumed that this effective RNA yield corresponds to a subset of the experimental measurements in [reference to Prof. Shattock's publication], namely a measurement of the mass of RNA sequences that are not degraded (have a certain minimum length).
+This model aims to link effective RNA yield in RNA vaccine transcription, which is a grouped term representing the  absolute RNA yield crtical quality attribute (CQA) minus degradation CQA. It is assumed that this effective RNA yield corresponds to a subset of the experimental RNA yield from a statistical Design Of Experiments dataset (cf. *Experimental_Data.xlsx*), namely a measurement of the mass of RNA sequences that are not degraded (have a certain minimum length).
 
 Whereas the proposed CQA accounts for the necessary quantity of RNA produced, this does not account for other CQAs:
 - Sequence identity is crucial in assuring translation of the RNA in the patient's cell into the polypeptides that act as 'active pharmaceutical ingredient', and are recognised by the patient's immune system as antigen.
-- 5'capping: 5'capping of the RNA sequence not only protects the RNA from being degraded. In the patient's cell, incorrect 5'capping can lead to the RNA sequence being recognised as foreign, leading to a cell-wide (??) shutdown of RNA translation [reference]
+- 5'capping: 5'capping of the RNA sequence not only protects the RNA from being degraded. In the patient's cell, incorrect 5'capping can lead to the RNA sequence being recognised as foreign shutting down translation of RNA.
 
-A lack of mechanistic, biological understanding currently is inhibiting the development of models that link sequence identity and 5'capping to critical process parameters (CPPs) such as spermidine concentration, and we want to refrain from using statistical or data-driven models in this publication.
+A lack of mechanistic, biological understanding is currently inhibiting the development of models that link sequence identity and 5'capping to critical process parameters (CPPs) such as spermidine concentration, and we want to refrain from using statistical or data-driven models in this manuscript.
 
 We propose a simple mechanistic model linking the production of effective RNA yield (RNA yield CQA and degradation CQA) to the following critical process parameters:
 - Reaction time
 - Total initial Mg concentration
 - Total initial NTP concentration
-- T7RNAP enzyme concentration
+- Initial total T7RNAP enzyme concentration
 
 ### Model
 
-The buffer solution of the RNA transcription reactor is complex. It is assumed that the main species present in solution affecting transcription and degradtion kinetics are: Mg <sup>2+</sup>, NTP <sup>4-</sup> (all nucleotides are assumed to be the same), H<sup>+</sup>, HEPES <sup>-</sup> (buffer) and PPi <sup>4-</sup> (pyrophosphate)
+The buffer solution of the RNA transcription reactor is complex. It is assumed that the main species present in solution affecting transcription and degradtion kinetics are: Mg<sup>2+</sup>, NTP<sup>4-</sup> (all nucleotides are assumed to be the same), H<sup>+</sup>, HEPES<sup>-</sup> (buffer) and PPi<sup>4-</sup> (pyrophosphate)
 
 These 5 free solution components can form the following 10 complexes:
-HNTP<sup>3-</sup>, MgNTP<sup>2-</sup>, Mg2NTP, MgHNTP<sup>-</sup>, MgPPi<sup>2+</sup>, Mg2PPi, HPPi<sup>3-</sup>, H2PPi<sup>2-</sup>, MgHPPi<sup>-</sup>
+HNTP<sup>3-</sup>, MgNTP<sup>2-</sup>, Mg<sub>2</sub>NTP, MgHNTP<sup>-</sup>, MgPPi<sup>2+</sup>, Mg<sub>2</sub>PPi, HPPi<sup>3-</sup>, H<sub>2</sub>PPi<sup>2-</sup>, MgHPPi<sup>-</sup>
 
 We propose the following system of differential-algebraic equations to model the RNA yield $[𝑅𝑁𝐴]_{𝑡𝑜𝑡}$ respresenting the CQA. In its differential expression, it can be seen that the production and consumption of $[𝑅𝑁𝐴]_{𝑡𝑜𝑡}$ consists of transcription and degradation kinetics as stand-ins for the respective CQAs.
 
@@ -153,3 +153,29 @@ Hence, at each time iteraton, instead of solving this whole algebraic system of 
 To avoid this search for the initial guesses at each timestep, the solution to the free solution concentration system of one time step, would be the initial guess to the solver of the next step. This would most of the time be sufficient to find a physical solution, leading to significant computational savings. However, for the cases that it didn't give non-negative solutions, the same search for a valid initial guess was performed.
 
 Since the 'ODE function', which for the canned solvers would only return the incremental concentration change, also needed to provide an updated guess for the solution, an in-house implementation of explicit 4th order solvers, Runge-Kutta 4 (RK4), were used to solve the given system.
+
+### Parameter estimation
+
+From Prof. Shattock's group, a dataset was obtained that was used for statistical Design of Experiments.
+Only a subset of this data could be used. Only the yields corresponding to a fixed, at that stage experimentally optimal, type of buffer, HEPES and spermidine concentration could be used. As already mentioned, accounting for spermidine concentration etc. from first principles would be too complex and intractable.
+
+The aim is then to check if parameters to the proposed model can be found that give a good fit to the data.
+Although the process of model building is presented as linear, this was an iterative process of proposing different terms and fitting parameters.
+
+Given that we are presented with an overall small set of data, with a disproportionaltely large proportion of the data set describing RNA yield dependence on Mg concentration, the challenge consisted in proposing model terms that were able to capture the overall trends of the optimum in Mg and NTP dependence without overfitting.
+
+The presented [Model section](# Model) was found to be the 'simplest' model to capture most non-linearities (apart from NTP dependence at high Mg as discussed in later sections).
+
+Since the model was already overparameterised and the parameters highly correlated as is, suggesting further terms would only overfit the model. On the contrary, $\alpha$ was set to 1, as the alpha term would be inversely correlated to k<sub>app</sub> and K<sub>1</sub>. No enzyme degradation was assumed for now as the response of 'levelling off' of RNA yield was indistinguishable from the effect of K<sub>1</sub> and K<sub>2</sub>. Furthermore, the degradation reaction orders n<sub>ac</sub>, n<sub>ba</sub>, n<sub>Mg</sub> and n<sub>RNA</sub> were all set to one for now.
+
+In future QbD iterations, Model-Based DoE has to be performed to investigate if the addition of other terms of physical phenomena would lead to improvements. Potential terms to be investigated include:
+
+1. 'Enzyme poisoning' terms in the denominator of V<sub>tr</sub>: K<sub>3</sub> [MgNTP]<sup>2</sup> and K<sub>4</sub> [Mg]<sup>2</sup>
+2. Parameter estimation of n<sub>ac</sub>, n<sub>ba</sub>, n<sub>Mg</sub> and n<sub>RNA</sub>
+3. Mg<sub>2</sub>PPi precipitation term
+
+However, for now, as the parameters are highly correlated, more physical, mechanistic knowledge is needed to either fix some of these parameters or constrain their bounds in parameter estimation for effective model discrimination which for the time being is not possible.
+
+FOR EXAMPLE INCORPORATE NTP MEASUREMENTS FOR MODEL DISCRIMINATION
+
+It also has to be noted that an inhibition term in K<sub>5</sub> [MgNTP]<sup>2</sup> [Mg] (which is already difficult to justify mechanistically) gave the dependence on NTP at high Mg that the general model was lacking, but displayed even poorer predictive power
