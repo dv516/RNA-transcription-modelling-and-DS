@@ -18,7 +18,11 @@ from data_functions import get_experimental_data
 
 X_new, C_RNA_new, C_RNA_stdev, MAE_exp, MSE_exp = get_experimental_data()
 
-# opt_param = [10.9, 1.4e6, 4.89e5, 1.20e6, 0, 0, 0, 0, 0] # If run without optimal model parameters
+## These are our optimal parameters. The reader should also ave gotten similar
+## values to these in curve_fitting_exploration_predicton. If the optimal 
+## parameters are different due to different dependencies (which shouldn't 
+## happen), the reader may wish to change these optimal parameters
+## These parameters can also be changed for exploration
 opt_param = [4.34, 5.55e+05, 1.94e+05, 1.20e+06, 0, 0, 0, 0, 0]
 
 new = opt_param
