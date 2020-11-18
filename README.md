@@ -10,6 +10,7 @@ This README document explains the function of each item within this repository a
 
 ### Documentation
 - *Documentation.md*: Gives scientific background reading on the functions and main scripts, and comments on some of the code implementation
+- *Equations* folder: Includes the equations as .svg files referenced for illustration in *Documentation.md*
 
 ### Function scripts
 -  *mass_balances.py*: Includes the solution component concentration mass balances that need to be solved for either constant pH or overall H concentration at each time step within *odes_and_curve_fitting_functions*
