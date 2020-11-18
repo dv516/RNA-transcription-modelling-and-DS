@@ -1,7 +1,4 @@
-# RNA-transcription-modelling-and-DS
-Model Implementation and Design Space Construction to support 'Quality by Design modelling for rapid RNA vaccine production against emerging infectious diseases'
-
-# Quality by Design modelling for rapid RNA vaccine production against emerging infectious diseases - Code and Supplementary Information
+# Quality by Design modelling for rapid RNA vaccine production against emerging infectious diseases - Supplementary Information
 
 ### Code by:
 - Damien van de Berg
@@ -60,7 +57,7 @@ The overall structure of the system, with differential equations describing the 
 
 This gives a well-posed mathematical problem which can be solved using DAE solvers or in this case, using initial value differential ODE solvers to solve for the total concentrations, where at each time step the solution concentrations are obtained using algebraic solvers.
 
-If possible, exisitng knowledge should be used as much as possible to determine the parameters of this model. As such, $N_{all}$ is fixed to 10,000 as it represents the length of the nucleotide chain. Similarly, the equilibrium constants 𝐾<sub>𝑒𝑞,0</sub> to 𝐾<sub>𝑒𝑞,8</sub> were all listed in this [publication](https://www.sciencedirect.com/science/article/pii/S0006349511054154):
+If possible, exisitng knowledge should be used as much as possible to determine the parameters of this model. As such, N<sub>all</sub> is fixed to 10,000 as it represents the length of the nucleotide chain. Similarly, the equilibrium constants 𝐾<sub>𝑒𝑞,0</sub> to 𝐾<sub>𝑒𝑞,8</sub> were all listed in this [publication](https://www.sciencedirect.com/science/article/pii/S0006349511054154):
 𝐾<sub>𝑒𝑞,0</sub> = 10<sup>-6.95</sup>, 𝐾<sub>𝑒𝑞,1</sub> = 10<sup>-4.42</sup>, 𝐾<sub>𝑒𝑞,2</sub> = 10<sup>-1.69</sup>, 𝐾<sub>𝑒𝑞,3</sub> = 10<sup>-1.49</sup>, 𝐾<sub>𝑒𝑞,4</sub> = 10<sup>-5.42</sup>, 𝐾<sub>𝑒𝑞,5</sub> = 10<sup>-2.33</sup>, 𝐾<sub>𝑒𝑞,6</sub> = 10<sup>-8.94</sup>, 𝐾<sub>𝑒𝑞,7</sub> = 10<sup>-6.13</sup>, 𝐾<sub>𝑒𝑞,8</sub> = 10<sup>-3.05</sup>
 and 𝐾<sub>eq,9</sub> was taken to be 10<sup>-7.5</sup> (the K<sub>A</sub> for HEPES buffer), all in M.
 
