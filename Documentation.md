@@ -88,6 +88,17 @@ The presented [Model section](###model) was found to be the 'simplest' model to 
 
 Since the model was already overparameterised and the parameters highly correlated as is, suggesting further terms would only overfit the model. On the contrary, alpha was set to 1, as the alpha term would be inversely correlated to k<sub>app</sub> and K<sub>1</sub>. No enzyme degradation was assumed for now as the response of 'levelling off' of RNA yield was indistinguishable from the effect of K<sub>1</sub> and K<sub>2</sub>. Furthermore, the degradation reaction orders n<sub>ac</sub>, n<sub>ba</sub>, n<sub>Mg</sub> and n<sub>RNA</sub> were all set to one for now.
 
+### Parameter estimation and modelling results
+
+<img align = center src="./Figures/Modelling.png">
+
+### Design Space Results and Cost Analysis
+
+<img align = center src="./Figures/Design space and Cost analysis.png">
+<img align = center src="./Figures/Prob Des Space.png">
+
+### Future Work
+
 In future QbD iterations, Model-Based DoE has to be performed to investigate if the addition of other terms of physical phenomena would lead to improvements. Potential terms to be investigated include:
 
 1. 'Enzyme poisoning' terms in the denominator of V<sub>tr</sub>: K<sub>3</sub> [MgNTP]<sup>2</sup> and K<sub>4</sub> [Mg]<sup>2</sup>
