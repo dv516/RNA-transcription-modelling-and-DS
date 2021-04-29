@@ -95,6 +95,9 @@ Since the model was already overparameterised and the parameters highly correlat
 ### Design Space Results and Cost Analysis
 
 <img align = center src="./Figures/Design space and Cost analysis.png">
+
+### Probabilistic Design Space
+
 <img align = center src="./Figures/Prob Des Space.png">
 
 ### Future Work
